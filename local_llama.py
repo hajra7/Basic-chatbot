@@ -1,14 +1,12 @@
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-
+from langchain_ollama import OllamaLLM as Ollama
 import streamlit as st
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 ## Langsmith tracking
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -25,16 +23,12 @@ prompt = ChatPromptTemplate.from_messages(
 
 ##steamlit framework
 
-st.title("LangChain OpenAI Chatbot")
+st.title("LangChain Ollama Chatbot")
 input_question = st.text_input("Enter your question:")
 
 ## OpenAI Chat Model
 
-llm = ChatOpenAI(
-    model="gpt-3.5-turbo",
-    temperature=0.2,
-    max_tokens=1000,
-)
+llm =Ollama(model="mistral")
 
 output_parser = StrOutputParser()
 chain= prompt | llm | output_parser
